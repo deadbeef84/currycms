@@ -637,7 +637,7 @@ class Curry_Backend_PageHelper {
 		if ($modulePermission) {
 			$modules = array('Predefined' => $modules);
 			foreach(AbstractModule::getModuleList() as $className) {
-				$parts = explode("_", str_replace("_Module_", "_", $className));
+				$parts = explode("\\", str_replace("\\Module\\", "\\", $className));
 				$package = array_shift($parts);
 				$modules[$package][$className] = join(" / ", $parts);
 				$valid[] = $className;
@@ -716,14 +716,14 @@ class Curry_Backend_PageHelper {
 			if(!class_exists($moduleClass))
 				throw new Exception('Class \''.$moduleClass.'\' could not be loaded, please check the path and classname.');
 				
-			$defaultName = substr($moduleClass, strrpos($moduleClass, '_') + 1);
+			$defaultName = substr($moduleClass, strrpos($moduleClass, '\\') + 1);
 			$targets[''] = '[ Custom ]';
 			asort($targets);
 			
 			$templates = array('' => "[ None ]", 'new' => "[ Create new ]") + Curry_Backend_Template::getTemplateSelect();
-			$defaultTemplateName = 'Modules/'.$defaultName.'.html';
+			$defaultTemplateName = 'Modules/'.$defaultName.'.html.twig';
 			$defaultTemplate = '';
-			if($moduleClass !== 'Curry_Module_Article' && call_user_func(array($moduleClass, 'hasTemplate')))
+			if($moduleClass !== 'Curry\\Module\\Article' && call_user_func(array($moduleClass, 'hasTemplate')))
 				$defaultTemplate = array_key_exists($defaultTemplateName, $templates) ? $defaultTemplateName : 'new';
 			
 			$predefinedTemplates = call_user_func(array($moduleClass, 'getPredefinedTemplates'));

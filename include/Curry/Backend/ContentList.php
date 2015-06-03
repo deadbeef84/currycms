@@ -16,6 +16,7 @@
  * @link       http://currycms.com
  */
 use Curry\Backend\AbstractBackend;
+use Curry\ModelView\ListView;
 use Curry\Module\PageModuleWrapper;
 use Curry\Util\ArrayHelper;
 use Curry\Util\Propel;
@@ -27,7 +28,7 @@ use Curry\Util\Html;
  *
  * @package Curry\Backend
  */
-class Curry_Backend_ContentList {
+class Curry_Backend_ContentList extends ListView {
 	/**
 	 * @var PageRevision
 	 */

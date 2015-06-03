@@ -37,6 +37,14 @@ class Curry_Backend_Page extends \Curry\Backend\AbstractLegacyBackend
 		return "Pages";
 	}
 
+	public function initialize()
+	{
+		$page = self::getPage(PageAccessPeer::PERM_CONTENT);
+		$pageRevision = $page->getWorkingPageRevision();
+		$this->addView('contentList', new Curry_Backend_ContentList($this, $pageRevision), 'content-list/');
+	}
+
+
 	public function getNotifications()
 	{
 		return PageQuery::create()
@@ -838,8 +846,8 @@ class Curry_Backend_Page extends \Curry\Backend\AbstractLegacyBackend
 			}
 		}
 
-		$list = new Curry_Backend_ContentList($this, $pageRevision, $langcode);
-		$this->addMainContent($list);
+		$this->contentList->setOptions(array('url' => (string)url($this->contentList->json->url(), $_GET)));
+		$this->addMainContent($this->contentList);
 	}
 	
 	/**

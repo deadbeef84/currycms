@@ -60,9 +60,8 @@ class ListView extends AbstractBackend {
 	protected static $defaultActionOptions = array(
 		//'action' => Curry_ModelView_Abstract|callback,
 		//'label' => 'Name',
-		//'url' => 'path/',
+		//'href' => 'path/',
 		'class' => '',
-		'hide' => false,
 		'general' => false,
 		'single' => false,
 		'multi' => false,
@@ -238,9 +237,9 @@ class ListView extends AbstractBackend {
 	{
 		$tableMap = $this->query->getTableMap();
 		foreach($tableMap->getColumns() as $column) {
-			if($column->isForeignKey()) {
-				continue;
-			}
+			//if($column->isForeignKey()) {
+			//	continue;
+			//}
 			$name = strtolower($column->getName());
 			$this->addColumn($name, array(
 				'hide' => $column->isPrimaryKey(),
@@ -410,11 +409,12 @@ class ListView extends AbstractBackend {
 		}
 
 		$options['actions'] = array();
+		$this->getViews();
 		foreach($this->actions as $name => $action) {
 			if (isset($action['action']) && !isset($action['href'])) {
 				if (!$action['action'] instanceof \Curry\View)
 					throw new \Exception("$name action is not of type View");
-				$action['href'] = $this->$name->url();
+				$action['href'] = (string)url($this->$name->url(), $_GET);
 				unset($action['action']);
 			}
 			$allowed = array('label', 'href', 'class', 'single', 'multi', 'general');

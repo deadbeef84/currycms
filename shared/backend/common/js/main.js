@@ -2,6 +2,7 @@
 (function($) {
 	$.registerComponent('.previewimage', 'previewImage');
 	$.registerComponent('.filebrowser', 'filebrowser');
+	$.registerComponent('.finder', 'finder');
 	$.registerComponent('.ctrlsave', 'ctrlsave');
 	$.registerComponent('.ajaxsubmit', 'ajaxsubmit');
 	$.registerComponent('.trigger-change', 'change');

@@ -43,11 +43,14 @@ var files = [
   // grid
   'bower_components/curry-grid/grid.js',
   'bower_components/curry-grid/grid.css',
+  // finder
+  'bower_components/curry-finder/finder.js',
+  'bower_components/curry-finder/finder.css',
   // Curry
   '../backend/common/js/core.js',
   '../backend/common/js/plugins.js',
   '../backend/common/js/main.js',
-  '../backend/common/js/finder.js',
+  //'../backend/common/js/finder.js',
   '../backend/common/js/postconfigure.js'
 ];
 
@@ -64,7 +67,7 @@ function images() {
 // JS concat, strip debugging and minify
 gulp.task('scripts', function() {
   return gulp.src(scripts())
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(concat('all.min.js'))
     .pipe(gulp.dest('build'));
 });

@@ -1,0 +1,26 @@
+{
+  "name": "curry-grid",
+  "version": "1.0.0",
+  "homepage": "https://github.com/deadbeef84/curry-grid",
+  "authors": [
+    "Jesper Ek <deadbeef84@gmail.com>"
+  ],
+  "main": ["grid.js","grid.css"],
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "curry",
+    "cms",
+    "grid",
+    "listview"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

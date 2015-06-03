@@ -3,15 +3,58 @@
 namespace Curry\Backend;
 
 use Curry\Form\ModelForm;
+use Curry\ModelView\ListView;
 use Curry\Tree\PropelTree;
 use Curry\Tree\Tree;
+use Curry\View;
 use Symfony\Component\HttpFoundation\Request;
 
 class Pages extends AbstractBackend {
 	public function initialize()
 	{
 		$this->addView('menu', $this->getMenu());
-		$this->addViewFunction('page', array($this, 'showPage'), ':id/');
+		$this->addView('list', new ListView('Page', array(
+			'maxPerPage' => 5,
+			'columns' => array(
+				//'_pk' => array('hide' => false),
+				//'user_role_id' => array('width' => 120, 'align' => 'right'),
+			),
+		)));
+		$this->addViewFunction('properties', array($this, 'showProperties'), ':id/');
+		$this->addViewFunction('content', array($this, 'showContent'), ':id/content/');
+	}
+
+	protected function getPage(View $view, $permission)
+	{
+		$page = \PageQuery::create()->findPk($view['id']);
+		if (!$page)
+			throw new \Exception('Page not found');
+
+		$user = \User::getUser();
+		if ($user && $user->hasPagePermission($page, $permission))
+			return $page;
+
+		throw new \Exception('Access denied');
+	}
+
+	protected function getPageViews(\Page $page)
+	{
+		$items = array(
+			'properties' => \PageAccessPeer::PERM_PROPERTIES,
+			'content' => \PageAccessPeer::PERM_CONTENT,
+		);
+		return array_keys($items);
+	}
+
+	protected function addMenuItems(\Page $page)
+	{
+		$names = array(
+			'properties' => 'Properties',
+			'content' => 'Content',
+		);
+		foreach($this->getPageViews($page) as $id) {
+			$this->addMenuItem($names[$id], $this->$id->url(array('id' => $page->getPageId())));
+		}
 	}
 
 	protected function getMenu()
@@ -50,7 +93,7 @@ class Pages extends AbstractBackend {
 		}
 
 		$p['expand'] = true;
-		$p['href'] = $this->page->url(array('id' => $page->getPageId()));
+		$p['href'] = $this->properties->url(array('id' => $page->getPageId()));
 
 		// Mark active node
 		if(isset($_GET['page_id']) && $_GET['page_id'] == $page->getPageId())
@@ -77,31 +120,51 @@ class Pages extends AbstractBackend {
 
 	public function show(Request $request)
 	{
-		$this->addMenuItem('Foo', 'bar', 'message', 'notification');
-		$this->addMainContent('foo');
-		$this->addMenuContent($this->menu);
+		$this->addMainContent($this->list);
 		return $this->render();
 	}
 
-	public function showPage(Request $request, $view)
+	public function showContent(Request $request, View $view)
 	{
-		$page = \PageQuery::create()->findPk($view['id']);
+		$page = $this->getPage($view, \PageAccessPeer::PERM_PROPERTIES);
+		$this->addMenuItems($page);
+
+		return $this->render();
+	}
+
+	public function showProperties(Request $request, View $view)
+	{
+		$page = $this->getPage($view, \PageAccessPeer::PERM_PROPERTIES);
+		$this->addMenuItems($page);
 
 		$this->addBreadcrumb('Pages', $view->parent->url());
 		$this->addBreadcrumb($page->getName(), $view->url());
-		$this->addMenuContent($this->menu);
-		$this->addMainContent($page->getName());
 
-
-		$form = new \Curry\Form\Form(array(
-			'fields' => array(
-				'test' => array(
-					'type' => 'text'
-				)
+		$form = new ModelForm('Page', array(
+			'ignoreFks' => false,
+			'columnFields' => array(
+				'uid' => false,
+				'active_page_revision_id' => false,
+				'working_page_revision_id' => false,
+				'created_at' => false,
+				'updated_at' => false,
+				'tree_left' => false,
+				'tree_right' => false,
+				'tree_level' => false,
 			),
 		));
+		$form->fillForm($page);
+		if ($request->isMethod('POST') && $form->isValid($request->request->all())) {
+			$form->fillModel($page);
+		}
 		$this->addMainContent($form->render());
 
 		return $this->render();
+	}
+
+	public function render()
+	{
+		//$this->addMenuContent($this->menu);
+		return parent::render();
 	}
 }

@@ -47,7 +47,7 @@ class Backend extends AbstractBackend implements EventSubscriberInterface {
 				$backendClasses = array();
 				$classes = ClassEnumerator::findClasses(__DIR__.'/../Backend');
 				foreach($classes as $className) {
-					if (class_exists($className) && $className !== __CLASS__ && $className !== 'Curry\Backend\Setup') {
+					if (class_exists($className) && $className !== __CLASS__ && $className !== 'Curry\Backend\Setup' && $className !== '\\Curry_Backend_ContentList') {
 						$r = new \ReflectionClass($className);
 						if ($r->isSubclassOf('Curry\\Backend\\AbstractBackend') && !$r->isAbstract())
 							$backendClasses[strtolower($r->getShortName())] = $className;

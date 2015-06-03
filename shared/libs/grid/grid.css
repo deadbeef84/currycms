@@ -1,0 +1,164 @@
+.modelview {
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+/* header */
+.modelview-header {
+    background-color: #f0f0f0;
+    padding: 8px;
+    overflow: hidden;
+}
+.modelview-title {
+    display: inline-block;
+    margin-right: 0.5em;
+    font-size: 1.25em;
+    line-height: 1;
+    vertical-align: middle;
+}
+.modelview-search {
+    float: right;
+}
+
+/* general actions */
+.modelview-general-actions {
+    display: inline-block;
+    vertical-align: middle;
+}
+.modelview-general-action {
+    display: inline-block;
+    background: #ccc;
+    padding: 0 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* table */
+.modelview-content {
+    overflow-x: auto;
+    //overflow-y: hidden;
+}
+.modelview-content-table {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+
+/* rows */
+.modelview-header-row {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+.modelview-row > td,
+.modelview-header-row > th {
+    padding: 8px;
+    text-align: left;
+}
+.modelview-header-row > th:not(:last-child) {
+    border-right: 1px solid #ccc;
+}
+.modelview-header-row > th > a {
+    color: inherit;
+    text-decoration: none;
+}
+.modelview-row {
+    border-top: 1px solid #ccc;
+}
+.modelview-row:hover,
+.modelview-row:hover + .modelview-row-addon {
+    background-color: #fafafa;
+}
+.modelview-row-selected > td {
+    border-top: 1px solid #FF7200;
+    background-color: #ffe7d3;
+}
+.modelview-row-selected:last-child > td,
+.modelview-row-selected + .modelview-row-addon > td {
+    background-color: #ffe7d3;
+    border-bottom: 1px solid #FF7200;
+}
+.modelview-row-selected + .modelview-row {
+    border-top: 1px solid #FF7200;
+}
+.modelview-row-addon > td {
+    padding: 0 8px 8px;
+}
+
+/* single actions */
+.modelview-header-row .modelview-col-actions {
+    font-size: 0.8em;
+    color: #888;
+    text-align: center;
+}
+.modelview-header-row .modelview-col-actions:hover {
+    color: #333;
+}
+.modelview-col-actions {
+    width: 32px;
+}
+.modelview-single-actions {
+    opacity: 0;
+    text-align: center;
+}
+.modelview-row:hover .modelview-single-actions {
+    opacity: 1;
+}
+.modelview-col-actions ul {
+    position: absolute;
+    display: none;
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    text-align: right;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    min-width: 100px;
+    right: 12px;
+}
+.modelview-col-actions:hover ul {
+    display: block;
+    z-index: 1;
+}
+.modelview-col-actions li {
+    padding: 0 8px;
+}
+.modelview-col-actions label {
+    white-space: nowrap;
+    text-align: left;
+}
+.modelview-single-action:hover {
+    background-color: #f00;
+    color: white;
+}
+.modelview-single-action a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+}
+.modelview-empty {
+    line-height: 60px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+/* footer */
+.modelview-footer {
+    font-size: 0.8em;
+    color: #444;
+    padding: 0 8px;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    line-height: 36px;
+}
+.modelview-status {
+    display: inline-block;
+    vertical-align: middle;
+}
+.modelview-pager {
+    float: right;
+}
+.modelview-pager > input {
+    text-align: right;
+}

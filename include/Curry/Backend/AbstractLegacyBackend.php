@@ -96,12 +96,14 @@ abstract class AbstractLegacyBackend extends AbstractBackend
 			return $re->getResponse();
 		}
 		catch (\Exception $e) {
+			if($this->app['developmentMode'])
+				throw $e;
 			if(!headers_sent())
 				header("HTTP/1.0 500 Internal server error: ".str_replace("\n", "  ", $e->getMessage()));
 			$this->app->logger->error($e->getMessage(), array('exception' => $e));
 			$this->addMessage($e->getMessage(), self::MSG_ERROR);
-			if($this->app['developmentMode'])
-				$this->addMainContent("<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>");
+			//if($this->app['developmentMode'])
+			//	$this->addMainContent("<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>");
 		}
 
 		if (is_object($result) && $result instanceof Response)
